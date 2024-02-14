@@ -13,11 +13,13 @@ async function main() {
   // let the server deal the hand
   const initialCards = await Promise.all([
     // note: this is still calling the v1 APIs
+    // changed this to V2, make sure id and count is known
+    Api.dealV2(id, count),
+    /*Api.deal(),
     Api.deal(),
     Api.deal(),
     Api.deal(),
-    Api.deal(),
-    Api.deal(),
+    Api.deal(),*/
   ]);
   console.log(initialCards);
 

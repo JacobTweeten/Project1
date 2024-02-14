@@ -39,7 +39,7 @@ export default function App({ initialCards }) {
        **/
       Array.from(Array(selected.length).keys()).map((arg, index) => {
         return Api.deal();
-      }),
+      })
     );
 
     // let's print out the fetched cards
@@ -74,3 +74,4 @@ export default function App({ initialCards }) {
     </div>
   );
 }
+// affect the draw button to say play again with an Ace in hand?
