@@ -27,11 +27,18 @@ export default class Api {
 
     if (typeof id !== "string" || typeof count !== "number") {
       throw new Error(
-        "dealV2 requires a deck id and a number representing how many cards should be dealt",
+        "dealV2 requires a deck id and a number representing how many cards should be dealt"
       );
     }
-    const resp = await fetch(`/api/v2/deck/${id}/deal`, { method: "POST" });
+    // implementing the count feature to draw cards equal to count
+    const resp = await fetch(`/api/v2/deck/${id}/deal?count=${count}`, {
+      method: "POST",
+    });
     const response = await resp.json();
     return response;
+
+    /*const resp = await fetch(`/api/v2/deck/${id}/deal`, { method: "POST" });
+    const response = await resp.json();
+    return response;*/
   }
 }

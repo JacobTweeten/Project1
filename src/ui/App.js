@@ -9,14 +9,14 @@ import { useState, useCallback } from "react";
    resets everything and plays another hand (with a new Deck).
 **/
 export default function App({ initialCards }) {
-  const [cards, setCards] = useState(initialCards);
-  const [selected, setSelected] = useState([]);
+  const [cards, setCards] = useState(initialCards); // cards = Current cards state
+  const [selected, setSelected] = useState([]); // selected = Indicies of selected cards
 
   function toggleSelected(index) {
     if (!selected.includes(index)) {
-      setSelected(selected.concat([index]));
+      setSelected(selected.concat([index])); //add index to selected array if card isn't selected
     } else {
-      setSelected(selected.filter((elt) => elt !== index));
+      setSelected(selected.filter((elt) => elt !== index)); // remove index from selected array
     }
   }
 
@@ -39,7 +39,7 @@ export default function App({ initialCards }) {
        **/
       Array.from(Array(selected.length).keys()).map((arg, index) => {
         return Api.deal();
-      }),
+      })
     );
 
     // let's print out the fetched cards
@@ -74,3 +74,4 @@ export default function App({ initialCards }) {
     </div>
   );
 }
+// change the draw button to say play again with an Ace in hand?
