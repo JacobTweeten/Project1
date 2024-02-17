@@ -31,11 +31,12 @@ export default class Api {
       );
     }
     // implementing the count feature to draw cards equal to count
-    for (let i = 0; i < count; i++) {
-      const resp = await fetch(`/api/v2/deck/${id}/deal`, { method: "POST" });
-      const response = await resp.json();
-      return response;
-    }
+    const resp = await fetch(`/api/v2/deck/${id}/deal?count=${count}`, {
+      method: "POST",
+    });
+    const response = await resp.json();
+    return response;
+
     /*const resp = await fetch(`/api/v2/deck/${id}/deal`, { method: "POST" });
     const response = await resp.json();
     return response;*/
