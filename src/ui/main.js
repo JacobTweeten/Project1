@@ -13,19 +13,15 @@ async function main() {
   // let the server deal the hand
   const initialCards = await Promise.all([
     // note: this is still calling the v1 APIs
-    Api.deal(),
-    Api.deal(),
-    Api.deal(),
-    Api.deal(),
-    Api.deal(),
+    //Api.deal(), *5
     // changed this to V2, make sure id and count is known
-    //Api.dealV2(id, 5)
+    Api.dealV2(id, 5)
   ]);
   console.log(initialCards);
 
   // create React elements
   const root = createRoot(document.getElementById("app"));
-  root.render(<App initialCards={initialCards} />);
+  root.render(<App initialCards={initialCards} />); //Renders App component to root container
 }
 
 window.onload = main;
