@@ -1,5 +1,6 @@
-import Api from "./Api.js";
+import Api, {dealV2} from "./Api.js";
 import Hand from "./Hand.js";
+import DrawButton from "./DrawButton.js";
 import { useState, useCallback } from "react";
 
 /**
@@ -19,6 +20,8 @@ export default function App({ initialCards }) {
       setSelected(selected.filter((elt) => elt !== index)); // remove index from selected array
     }
   }
+  // ^ updates the state of the selected cards
+
 
   // This function will be called when the Draw button is clicked
   const fetchNewCards = useCallback(async () => {
@@ -37,7 +40,7 @@ export default function App({ initialCards }) {
          much simpler single API call that specifies the number of
          cards we want dealt.
        **/
-      Array.from(Array(selected.length).keys()).map((arg, index) => {
+      Array.from(Array(selected.length).keys()).map((arg, index) => { // Couldn't figure out how to change this without it breaking something
         return Api.deal();
       })
     );
@@ -71,6 +74,7 @@ export default function App({ initialCards }) {
         onSelect={(index) => toggleSelected(index)}
       />
       <button onClick={async () => fetchNewCards(selected)}>Draw</button>
+      <DrawButton />
     </div>
   );
 }

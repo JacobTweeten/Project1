@@ -1,57 +1,70 @@
-import React, { useState } from "react";
-//This button is supposed to completely reset the game(?), not sure how to connect it to the App.js file
+import { useState } from "react";
+import Api from "./Api.js";
 
 const DrawButton = () => {
   const [cards, setCards] = useState([]);
-  const [selected, setSelected] = useState(false);
-}
+  const [drawn, setDrawn] = useState(false);
 
-async function drawCards(){
-  // Simulate drawing cards (replace with actual logic)
-  const newCards = ["2H", "3C", "4D", "5S", "AH"]; // Example cards
+  async function drawCards() {
+    const newCards =  cards.dealt_cards;
+    //Collect the number of cards equal to count and store them in new cards
 
-  // Check if there's an Ace in the drawn cards
-  const hasAce = newCards.some((card) => card.includes("A"));
+    const shouldReset = newCards.includes("A"); 
 
-  // If there's an Ace, discard all non-Ace cards
-  const filteredCards = hasAce ? newCards.filter((card) => card.includes("A")) : newCards;
+    let filteredCards = [];
+  if (shouldReset) {
+    // If there is an Ace, discard all non-Ace cards
+    filteredCards = newCards.filter((card) => card.includes("A")); //Used Chat GPT to figure out how to tell if an Ace was in hand
+  } else {
+    // Discard at most 3 non-Ace cards
+    const nonAceCards = newCards.filter((card) => !card.includes("A"));
+    filteredCards = nonAceCards.slice(0, 3);
+  }
 
-  setCards(filteredCards);
-  setDrawn(true);
+    setCards(newCards);
+    setDrawn(true);
+
+    // Reset the game if the condition is met
+    if (shouldReset) {
+      playAgain();
+    }
+  }
+
+  async function playAgain() { // creates a new deck 
+    const newDeck = await Api.deck(); // not actually reseting the deck?
+    console.log(newDeck);
+
+    setCards([]);
+    setDrawn(false);
+  }
+
+  return (
+    <div>
+      {drawn ? (
+        <button onClick={playAgain}>Play Again?</button> //Switches from Draw to Play Again when clicked, but doesn't reset
+      ) : (
+        <button onClick={drawCards}>Draw</button>
+      )}
+        <div>
+          <h2>All Hand Ranks:</h2>
+          <ul>
+            <p>High Card = No correlation</p>
+            <p>Straight = Numbers in Accending Order and Alternating Colors</p>
+            <p>Straight Flush = Numbers in Accending Order and Same Color</p>
+            <p>One Pair = A pair of the same rank, but different suits</p>
+            <p>Two Pair = Two pairs of same rank, but different suits</p>
+            <p>Three-of-a-Kind = Three of the same rank in different suits</p>
+            <p>Four-of-a-Kind = Four of the same rank in different suits</p>
+            <p>Five-of-a-Kind = Five of the same rank in different suits</p>
+            <p>Royal Flush = Ace, King, Queen, Joker and a 10 of the same suit</p>
+            <p>Flush = All cards are apart of the same symbol or suit</p>
+            <p>Full House = Hand consists of a Three-of-a-Kind and One Pair</p>
+
+
+          </ul>
+        </div>
+    </div>
+  );
 };
-
-async function playAgain(){
-  //resetting the game generates a deck again?
-  const newDeck = await Api.deck(); 
-  console.log(newDeck);
-  setCards([]);
-  setSelected(false);
-}
-
-return (
-  <div>
-    {drawn ? (
-      <button onClick={playAgain}>Play Again?</button>
-    ) : (
-      <button onClick={drawCards}>Draw</button>
-    )}
-    {cards.length > 0 && (
-      <div>
-        <h2>Drawn Cards:</h2>
-        <ul>
-          {cards.map((card, index) => (
-            <li key={index}>{card}</li>
-          ))}
-        </ul>
-      </div>
-    )}
-  </div>
-);
-
-
-//how to make a button
-/*function DrawButton({ onClick }) {
-  return <button onClick={onClick}>Play Again?</button>;
-}*/
 
 export default DrawButton;
